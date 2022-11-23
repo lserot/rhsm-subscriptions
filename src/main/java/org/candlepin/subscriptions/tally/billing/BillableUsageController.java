@@ -168,7 +168,7 @@ public class BillableUsageController {
         new TallyMeasurementKey(
             HardwareMeasurementType.PHYSICAL, Uom.fromValue(usage.getUom().value()));
     return snapshotRepository.sumMeasurementValueForPeriod(
-        usage.getOrgId(),
+        usage.getAccountNumber(),
         usage.getProductId(),
         // Billable usage has already been filtered to HOURLY only.
         Granularity.HOURLY,

@@ -20,8 +20,8 @@
  */
 package org.candlepin.subscriptions.tally.billing;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -101,7 +101,7 @@ class RemittanceControllerTest {
     List<TallySnapshot> snaps = new ArrayList<>();
     TallySnapshot expectedSnapshot1 =
         buildSnapshot(
-            "org123",
+            "account123",
             "rhosak",
             Granularity.HOURLY,
             ServiceLevel.PREMIUM,
@@ -114,7 +114,7 @@ class RemittanceControllerTest {
 
     TallySnapshot expectedSnapshot2 =
         buildSnapshot(
-            "org345",
+            "account345",
             "rhosak",
             Granularity.HOURLY,
             ServiceLevel.PREMIUM,
@@ -137,9 +137,11 @@ class RemittanceControllerTest {
 
     controller.syncRemittance();
     verify(remittanceRepo, times(2)).save(savedRemittance.capture());
-    assertThat(
-        savedRemittance.getAllValues(),
-        containsInAnyOrder(expectedRemittance1, expectedRemittance2));
+    assertEquals(2, savedRemittance.getAllValues().size());
+    assertTrue(
+        savedRemittance
+            .getAllValues()
+            .containsAll(List.of(expectedRemittance1, expectedRemittance2)));
   }
 
   @Test
@@ -147,7 +149,7 @@ class RemittanceControllerTest {
     List<TallySnapshot> snaps = new ArrayList<>();
     TallySnapshot snapshot =
         buildSnapshot(
-            "org123",
+            "account123",
             "my-product",
             Granularity.HOURLY,
             ServiceLevel.PREMIUM,
@@ -170,7 +172,7 @@ class RemittanceControllerTest {
     List<TallySnapshot> snaps = new ArrayList<>();
     TallySnapshot snapshot =
         buildSnapshot(
-            "org123",
+            "account123",
             "rhosak",
             Granularity.HOURLY,
             ServiceLevel.PREMIUM,
@@ -221,7 +223,7 @@ class RemittanceControllerTest {
     BillableUsageRemittanceEntity remittance = createRemittance(snapshot, remittedValue);
 
     when(snapshotRepo.sumMeasurementValueForPeriod(
-            snapshot.getOrgId(),
+            snapshot.getAccountNumber(),
             snapshot.getProductId(),
             snapshot.getGranularity(),
             snapshot.getServiceLevel(),
@@ -237,7 +239,7 @@ class RemittanceControllerTest {
   }
 
   private TallySnapshot buildSnapshot(
-      String orgId,
+      String account,
       String productId,
       Granularity granularity,
       ServiceLevel sla,
@@ -250,7 +252,7 @@ class RemittanceControllerTest {
     measurements.put(new TallyMeasurementKey(HardwareMeasurementType.PHYSICAL, uom), val);
     measurements.put(new TallyMeasurementKey(HardwareMeasurementType.TOTAL, uom), val);
     return TallySnapshot.builder()
-        .orgId(orgId)
+        .accountNumber(account)
         .productId(productId)
         .snapshotDate(snapshotDate)
         .tallyMeasurements(measurements)

@@ -153,7 +153,7 @@ class BillableUsageControllerTest {
         new TallyMeasurementKey(
             HardwareMeasurementType.PHYSICAL, Measurement.Uom.fromValue(usage.getUom().value()));
     when(snapshotRepo.sumMeasurementValueForPeriod(
-            usage.getOrgId(),
+            usage.getAccountNumber(),
             usage.getProductId(),
             Granularity.HOURLY,
             ServiceLevel.fromString(usage.getSla().value()),
