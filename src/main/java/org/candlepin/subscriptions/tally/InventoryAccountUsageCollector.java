@@ -83,24 +83,25 @@ public class InventoryAccountUsageCollector {
   public AccountUsageCalculation collect(
       Collection<String> products, String account, String orgId) {
     AccountServiceInventory accountServiceInventory = fetchAccountServiceInventory(orgId, account);
-
-    HypervisorData hypervisorData = new HypervisorData(orgId);
-    Map<String, Set<HostBucketKey>> hostSeenBucketKeysLookup = new HashMap<>();
-    AccountUsageCalculation accountCalc = new AccountUsageCalculation(orgId);
     Map<String, Host> inventoryHostMap = buildInventoryHostMap(accountServiceInventory);
 
-    hypervisorData.addReportedHypervisors(inventory, orgId);
+    OrgHostsData orgHostsData = new OrgHostsData(orgId);
+    Map<String, Set<HostBucketKey>> hostSeenBucketKeysLookup = new HashMap<>();
+    AccountUsageCalculation accountCalc = new AccountUsageCalculation(orgId);
+
+    orgHostsData.addReportedHypervisors(inventory, orgId);
 
     inventory.processHost(
         orgId,
         culledOffsetDays,
         hostFacts -> {
-          NormalizedFacts facts = factNormalizer.normalize(hostFacts, hypervisorData);
+          NormalizedFacts facts = factNormalizer.normalize(hostFacts, orgHostsData);
 
           // Validate and set the account number.
           // Don't set null account as it may overwrite an existing value.
           // Likely won't happen, but there could be stale data in inventory with no account set.
           String hostAccount = facts.getAccount();
+          // TODO change to if accountCalc is set, keep going
           if (hostAccount != null) {
             String currentAccount = accountCalc.getAccount();
             if (currentAccount != null && !currentAccount.equalsIgnoreCase(hostAccount)) {
@@ -126,10 +127,10 @@ public class InventoryAccountUsageCollector {
               hostSeenBucketKeysLookup.computeIfAbsent(host.getInstanceId(), h -> new HashSet<>());
 
           if (facts.isHypervisor()) {
-            hypervisorData.addHypervisorFacts(hostFacts.getSubscriptionManagerId(), facts);
-            hypervisorData.addHost(hostFacts.getSubscriptionManagerId(), host);
+            orgHostsData.addHypervisorFacts(hostFacts.getSubscriptionManagerId(), facts);
+            orgHostsData.addHostToHypervisor(hostFacts.getSubscriptionManagerId(), host);
           } else if (facts.isVirtual() && StringUtils.hasText(facts.getHypervisorUuid())) {
-            hypervisorData.incrementGuestCount(host.getHypervisorUuid());
+            orgHostsData.incrementGuestCount(host.getHypervisorUuid());
           }
 
           ServiceLevel[] slas = new ServiceLevel[] {facts.getSla(), ServiceLevel._ANY};
@@ -149,7 +150,7 @@ public class InventoryAccountUsageCollector {
                       try {
                         String hypervisorUuid = facts.getHypervisorUuid();
                         if (hypervisorUuid != null) {
-                          hypervisorData.addUsageKey(hypervisorUuid, key);
+                          orgHostsData.addUsageKey(hypervisorUuid, key);
                         }
                         Optional<HostTallyBucket> appliedBucket =
                             ProductUsageCollectorFactory.get(product).collect(calc, facts);
@@ -181,7 +182,7 @@ public class InventoryAccountUsageCollector {
         });
 
     // apply data from guests to hypervisor records
-    hypervisorData.collectGuestData(accountCalc, hostSeenBucketKeysLookup);
+    orgHostsData.collectGuestData(accountCalc, hostSeenBucketKeysLookup);
 
     log.info("Removing stale buckets");
     for (Host host : accountServiceInventory.getServiceInstances().values()) {
@@ -190,7 +191,7 @@ public class InventoryAccountUsageCollector {
       host.getBuckets().removeIf(b -> !seenBucketKeys.contains(b.getKey()));
     }
 
-    var hypervisorHostMap = hypervisorData.hostMap();
+    var hypervisorHostMap = orgHostsData.hypervisorHostMap();
     if (hypervisorHostMap.size() > 0) {
       log.info("Persisting {} hypervisor hosts.", hypervisorHostMap.size());
       for (Host host : hypervisorHostMap.values()) {
@@ -204,6 +205,70 @@ public class InventoryAccountUsageCollector {
 
     return accountCalc;
   }
+
+  @Transactional
+  public Map<Host, NormalizedFacts> updateInstances(
+      Collection<String> products, String account, String orgId) {
+    AccountServiceInventory accountServiceInventory = fetchAccountServiceInventory(orgId, account);
+    Map<String, Host> inventoryHostMap = buildInventoryHostMap(accountServiceInventory);
+    Map<Host, NormalizedFacts> hostToFacts = new HashMap<>(inventoryHostMap.size());
+
+    OrgHostsData orgHostsData = new OrgHostsData(orgId);
+    orgHostsData.addReportedHypervisors(inventory, orgId);
+
+    inventory.processHost(
+        orgId,
+        culledOffsetDays,
+        hostFacts -> {
+          NormalizedFacts facts = factNormalizer.normalize(hostFacts, orgHostsData);
+
+          Host existingHost = inventoryHostMap.remove(hostFacts.getInventoryId().toString());
+          Host host;
+
+          if (existingHost == null) {
+            host = hostFromHbiFacts(hostFacts, facts);
+          } else {
+            host = existingHost;
+            populateHostFieldsFromHbi(host, hostFacts, facts);
+          }
+          hostToFacts.put(host, facts);
+
+          // TODO ???
+          if (facts.isHypervisor()) {
+            orgHostsData.addHypervisorFacts(hostFacts.getSubscriptionManagerId(), facts);
+            orgHostsData.addHostToHypervisor(hostFacts.getSubscriptionManagerId(), host);
+          } else if (facts.isVirtual() && StringUtils.hasText(facts.getHypervisorUuid())) {
+            orgHostsData.incrementGuestCount(host.getHypervisorUuid());
+          }
+        });
+
+    log.info(
+        "Removing {} stale host records (HBI records no longer present).", inventoryHostMap.size());
+    inventoryHostMap.values().stream()
+        .map(Host::getInstanceId)
+        .forEach(accountServiceInventory.getServiceInstances()::remove);
+    return hostToFacts;
+  }
+
+  @Transactional
+  public AccountUsageCalculation tally(Collection<String> products, String account, String orgId) {
+    AccountUsageCalculation accountCalc = new AccountUsageCalculation(orgId);
+    accountCalc.setAccount(account);
+
+    Set<UsageCalculation.Key> calcKeys = buildUsageCalculationKeys();
+
+    for (var product : products) {
+
+    }
+
+    return accountCalc;
+  }
+
+  private Set<UsageCalculation.Key> buildUsageCalculationKeys(Collection<String> products) {
+    // Generate all possible keys for all usages, SLAs and product list
+  }
+
+
 
   private AccountServiceInventory fetchAccountServiceInventory(String orgId, String account) {
     log.info("Finding HBI hosts for account={} org={}", account, orgId);

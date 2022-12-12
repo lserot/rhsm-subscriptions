@@ -43,7 +43,7 @@ import org.candlepin.subscriptions.tally.facts.NormalizedFacts;
 
 @Data
 @RequiredArgsConstructor
-public class HypervisorData {
+public class OrgHostsData {
 
   @NonNull private final String orgId;
 
@@ -51,6 +51,7 @@ public class HypervisorData {
   private Map<String, Set<Key>> hypervisorUsageKeys = new HashMap<>();
   private Map<String, NormalizedFacts> hypervisorFacts = new HashMap<>();
   private Map<String, Integer> hypervisorGuestCounts = new HashMap<>();
+  private Map<Host, NormalizedFacts> hostNormalizedFactsMap = new HashMap<>();
 
   @Getter(AccessLevel.NONE)
   @Setter(AccessLevel.NONE)
@@ -93,11 +94,11 @@ public class HypervisorData {
     hypervisorFacts.put(hypervisorUuid, facts);
   }
 
-  public void addHost(String hypervisorUuid, Host host) {
+  public void addHostToHypervisor(String hypervisorUuid, Host host) {
     hypervisorHosts.put(hypervisorUuid, host);
   }
 
-  public Map<String, Host> hostMap() {
+  public Map<String, Host> hypervisorHostMap() {
     return hypervisorHosts;
   }
 

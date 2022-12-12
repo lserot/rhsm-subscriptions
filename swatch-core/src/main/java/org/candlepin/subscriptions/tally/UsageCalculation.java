@@ -48,6 +48,30 @@ public class UsageCalculation {
 
   private final Key key;
 
+  public static class KeyBuilder {
+
+    private String productId;
+    private ServiceLevel sla;
+    private Usage usage;
+    private BillingProvider billingProvider;
+
+    public void productId(String productId) {
+      this.productId = productId;
+    }
+
+    public void serviceLevel(ServiceLevel sla) {
+      this.sla = sla;
+    }
+
+    public void usage(Usage usage) {
+      this.usage = usage;
+    }
+
+    public void billingProvider(BillingProvider billingProvider) {
+      this.billingProvider = billingProvider;
+    }
+  }
+
   /**
    * Natural key for a given calculation.
    *
