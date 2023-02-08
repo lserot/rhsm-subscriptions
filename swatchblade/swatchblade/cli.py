@@ -4,7 +4,7 @@ import rich.text
 import rich.logging
 
 from . import __version__
-from . import gabi as gabi_module
+from .gabi.command import gabi
 
 #    "[%(asctime)s] [%(levelname)s] "
 #    "[%(filename)s:%(funcName)s:%(lineno)d] - %(message)s"
@@ -24,12 +24,16 @@ def init_log_level(log_level):
     )
 
 
+def debug(msg):
+    log.debug(f"{msg}")
+
+
 def notice(msg):
     log.info(f"[yellow]{msg}[/yellow]", extra={"markup": True})
 
 
 def err(msg):
-    log.info(f"[bold red]{msg}[/bold red]", extra={"markup": True})
+    log.error(f"[bold red]{msg}[/bold red]", extra={"markup": True})
 
 
 class SwatchContext:
@@ -41,9 +45,6 @@ class SwatchContext:
         self.config[key] = value
         notice("Config:")
         notice(f"  {key} = {value}")
-
-
-pass_swatch_context = click.make_pass_decorator(SwatchContext, ensure=True)
 
 
 @click.group()
@@ -66,15 +67,14 @@ def cli(ctx, config, verbose):
         level = "INFO"
 
     ctx.obj = SwatchContext(log_level=level)
-    notice("Verbose logging is enabled.")
+    debug("Verbose logging is enabled.")
 
     for key, value in config:
         ctx.obj.set_config(key, value)
 
 
-@cli.group()
-def gabi():
-    pass
+cli.add_command(gabi)
 
 
-gabi.add_command(gabi_module.export)
+if __name__ == "__main__":
+    cli()
