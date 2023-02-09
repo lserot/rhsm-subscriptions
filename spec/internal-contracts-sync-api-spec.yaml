@@ -1,0 +1,97 @@
+openapi: "3.0.2"
+info:
+  title: "internal-contracts-sync-api"
+  description: "REST interface for the internal-contracts-sync service. Please note any deprecated APIs. Our current deprecation policy is to keep deprecated APIs around for at least 6 months."
+  version: 1.0.0
+paths:
+  /internal/rpc/syncContractsByOrg:
+    description: "Trigger a contract sync for a given Org ID"
+    post:
+      summary: "Sync contracts for given org_id."
+      requestBody:
+        $ref: "#/components/requestBodies/ContractOrgSyncRequestBody"
+      operationId: syncContractsByOrg
+      tags:
+        - internalContracts
+      responses:
+        '200':
+          description: "The request for syncing contracts by organization has completed successfully."
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: "#/components/schemas/DefaultResponse"
+        '400':
+          $ref: "../../../../spec/error-responses.yaml#/$defs/BadRequest"
+        '403':
+          $ref: "../../../../spec/error-responses.yaml#/$defs/Forbidden"
+        '404':
+          $ref: "../../../../spec/error-responses.yaml#/$defs/ResourceNotFound"
+        '500':
+          $ref: "../../../../spec/error-responses.yaml#/$defs/InternalServerError"
+  /internal/rpc/syncAllContracts:
+    description: "Trigger a sync for all contracts"
+    post:
+      summary: "Sync all contracts."
+      operationId: syncAllContracts
+      tags:
+        - internalContracts
+      responses:
+        '202':
+          description: "The request for syncing all contracts is successfully running."
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: "#/components/schemas/DefaultResponse"
+        '403':
+          $ref: "../../../../spec/error-responses.yaml#/$defs/Forbidden"
+        '500':
+          $ref: "../../../../spec/error-responses.yaml#/$defs/InternalServerError"
+  /internal-contracts-sync-openapi.json:
+    $ref: "../../../../spec/openapi-paths.yaml#/openapi-json"
+  /internal-contracts-sync-openapi.yaml:
+    $ref: "../../../../spec/openapi-paths.yaml#/openapi-yaml"
+components:
+  requestBodies:
+    OrgSyncRequestBody:
+      description: "ID of Organization to sync"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ContractOrgSyncRequestBody"
+  schemas:
+    DefaultResponse:
+      properties:
+        status:
+          type: string
+    ContractOrgSyncRequestBody:
+      type: object
+      properties:
+        org_id:
+          type: string
+    PageLinks:
+      properties:
+        first:
+          type: string
+        last:
+          type: string
+        previous:
+          type: string
+        next:
+          type: string
+      required:
+        - first
+        - last
+  securitySchemes:
+    PskIdentity:
+      type: apiKey
+      in: header
+      name: x-rh-swatch-psk
+      description: |
+        Psk header containing Pre Shared Key. Contains an
+        UUID string:
+        ```
+        c9a98753-2092-4617-b226-5c2653330b3d
+        ```
+security:
+  - PskIdentity: []
