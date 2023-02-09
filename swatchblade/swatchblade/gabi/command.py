@@ -1,12 +1,14 @@
 import click
 import requests
-import os
+import openshift
 import logging
 
 
-GABI_REQUEST_DEBUG_TMPL = "gabi request::{0}  gabi url: {{url}}{0}  gabi headers: {{headers}}{0}  gabi query: {{query_data}}".format(
-    os.linesep
-)
+GABI_REQUEST_DEBUG_TMPL = """
+gabi url: {{url}} 
+gabi headers: {{headers}}
+gabi query: {{query_data}}
+""".format()
 
 
 log = logging.getLogger(__name__)
@@ -14,11 +16,14 @@ log = logging.getLogger(__name__)
 
 @click.group
 @click.option("--gabi-url", required=True, type=str)
-@click.option("--gabi-token", required=True, type=str)
 @click.pass_obj
-def gabi(ctx, gabi_url, gabi_token):
-    log.info(ctx)
-    log.info(f"{gabi_url} and {gabi_token}")
+def gabi(obj, gabi_url):
+    log.info(obj)
+
+
+    gabi_token = openshift.whoami("-t")
+
+
     healthcheck(gabi_url, gabi_token)
 
 
@@ -27,9 +32,12 @@ def export():
     log.info("I am export")
 
 
+@gabi.command()
+@click.option("-")
+def query():
+
 class GabiError(Exception):
     """Errors specific to gabi"""
-
     pass
 
 
@@ -45,6 +53,6 @@ def healthcheck(url, token):
     if data["status"] != "OK":
         raise GabiError(f"Gabi healthcheck returned {data['status']}")
 
-    log.info("Gabi is available")
+    log.debug("Gabi is available")
 
     return True
