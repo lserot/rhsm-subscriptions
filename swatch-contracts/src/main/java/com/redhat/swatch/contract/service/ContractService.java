@@ -48,6 +48,14 @@ public class ContractService {
   @Transactional
   public Contract createContract(Contract contract) {
 
+    Map<String, Object> stringObjectMap =
+        Map.of(
+            "productId",
+            contract.getProductId(),
+            "subscriptionNumber",
+            contract.getSubscriptionNumber());
+    contractRepository.getContracts(stringObjectMap);
+
     var uuid = Objects.requireNonNullElse(contract.getUuid(), UUID.randomUUID().toString());
     contract.setUuid(uuid);
 
