@@ -18,29 +18,23 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.swatch;
+package com.redhat.swatch.contract;
 
-import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
-import java.util.Collections;
-import java.util.Map;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.mockito.MockitoAnnotations;
 
-public class PostgresResource implements QuarkusTestResourceLifecycleManager {
+@SuppressWarnings("java:S2187") /* Sonar thinks assertion is required */
+public class BaseUnitTest {
+  private AutoCloseable closeable;
 
-  static PostgreSQLContainer<?> db =
-      new CentosPostgreSQLContainer()
-          .withDatabaseName("rhsm-subscriptions")
-          .withUsername("rhsm-subscriptions")
-          .withPassword("rhsm-subscriptions");
-
-  @Override
-  public Map<String, String> start() {
-    db.start();
-    return Collections.singletonMap("quarkus.datasource.jdbc.url", db.getJdbcUrl());
+  @BeforeEach
+  void init_mocks() {
+    closeable = MockitoAnnotations.openMocks(this);
   }
 
-  @Override
-  public void stop() {
-    db.stop();
+  @AfterEach
+  void close_mocks() throws Exception {
+    closeable.close();
   }
 }

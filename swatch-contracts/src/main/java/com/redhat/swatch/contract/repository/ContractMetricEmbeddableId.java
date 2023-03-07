@@ -18,14 +18,14 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.swatch;
+package com.redhat.swatch.contract.repository;
 
 import java.io.Serializable;
 import java.util.UUID;
 import lombok.Data;
 
 @Data
-public class ContractMetricId implements Serializable {
+public class ContractMetricEmbeddableId implements Serializable {
 
   private UUID contractUuid;
   private String metricId;

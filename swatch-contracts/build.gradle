@@ -24,6 +24,7 @@ dependencies {
     implementation 'io.quarkus:quarkus-smallrye-fault-tolerance'
     implementation 'io.quarkus:quarkus-smallrye-health'
     implementation 'io.quarkus:quarkus-smallrye-openapi'
+    implementation project(':clients:swatch-internal-subscription-client')
     implementation libraries["clowder-quarkus-config-source"]
     implementation libraries["quarkus-logging-splunk"]
     implementation libraries["splunk-library-javalogging"]
@@ -56,12 +57,12 @@ compileJava.dependsOn tasks.openApiGenerate
 
 openApiGenerate {
     generatorName = "java"
-    inputSpec = "${projectDir}/src/main/resources/swatch_contracts_openapi.yaml"
+    inputSpec = "${projectDir}/src/main/resources/openapi.yaml"
     outputDir = "${buildDir}/generated"
-    apiPackage = "com.redhat.swatch.openapi.resource"
-    modelPackage = "com.redhat.swatch.openapi.model"
-    invokerPackage = "com.redhat.swatch.openapi"
-    groupId = "com.redhat.swatch"
+    apiPackage = "com.redhat.swatch.contract.openapi.resource"
+    modelPackage = "com.redhat.swatch.contract.openapi.model"
+    invokerPackage = "com.redhat.swatch.contract.openapi"
+    groupId = "com.redhat.swatch.contract"
     configOptions = [sourceFolder : "src/gen/java",
                      interfaceOnly: "true",
                      library      : "microprofile",

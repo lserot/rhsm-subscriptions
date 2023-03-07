@@ -18,17 +18,23 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.swatch;
+package com.redhat.swatch.contract;
 
-import com.redhat.swatch.openapi.model.Contract;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import io.quarkus.test.junit.QuarkusTest;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import javax.enterprise.inject.Stereotype;
+import javax.transaction.Transactional;
 
-@Mapper(componentModel = "cdi")
-interface ContractMapper {
-
-  Contract contractEntityToDto(ContractEntity contract);
-
-  @Mapping(target = "lastUpdated", ignore = true)
-  ContractEntity dtoToContractEntity(Contract contract);
-}
+/**
+ * Where we require both @QuarkusTest and @Transactional, we can use this interface as a custom
+ * annotation @QuarkusTransactionalTest. Primarily in the service level or repository.
+ */
+@QuarkusTest
+@Stereotype
+@Transactional
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface QuarkusTransactionalTest {}
