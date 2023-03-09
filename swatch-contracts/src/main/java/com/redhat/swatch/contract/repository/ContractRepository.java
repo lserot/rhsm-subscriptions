@@ -20,7 +20,6 @@
  */
 package com.redhat.swatch.contract.repository;
 
-import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -30,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ApplicationScoped
-public class ContractRepository implements PanacheRepositoryBase<ContractEntity, UUID> {
+public class ContractRepository implements Specification.PanacheImpl<ContractEntity, UUID> {
 
   public List<ContractEntity> getContracts(
       Map<String, Object> parameters, boolean isCurrentlyActive) {
@@ -86,8 +85,13 @@ public class ContractRepository implements PanacheRepositoryBase<ContractEntity,
     return find(query, nonNullParams).list();
   }
 
+  public List<ContractEntity> getContracts(Specification<ContractEntity> specification) {
+    return find(ContractEntity.class, specification, null);
+  }
+
   public ContractEntity findContract(UUID uuid) {
     log.info("Find contract by uuid {}", uuid);
     return find("uuid", uuid).firstResult();
   }
+
 }
