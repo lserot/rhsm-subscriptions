@@ -23,7 +23,7 @@ package org.candlepin.subscriptions.capacity.files;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import org.candlepin.subscriptions.ApplicationProperties;
 import org.candlepin.subscriptions.files.PerLineFileSource;
 import org.candlepin.subscriptions.util.ApplicationClock;

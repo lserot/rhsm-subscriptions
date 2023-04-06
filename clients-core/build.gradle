@@ -8,6 +8,7 @@ dependencies {
     implementation "org.jboss.resteasy:resteasy-client"
     implementation "org.springframework:spring-beans"
     implementation "org.slf4j:slf4j-api"
+    compileOnly libraries["jakarta-ws-rs"]
     testImplementation libraries["wiremock-jre8"]
 }
 

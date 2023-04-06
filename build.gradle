@@ -241,7 +241,8 @@ tasks.register("generateOpenApiJsonTally", GenerateTask) {
     generateModelTests = false
     generateApiTests = false
     configOptions = [
-        outputFileName: "internal-tally-openapi.json"
+        outputFileName: "internal-tally-openapi.json",
+        useJakartaEe: "true"
     ]
 }
 
@@ -252,7 +253,8 @@ tasks.register("generateOpenApiJsonSubSync", GenerateTask) {
     generateModelTests = false
     generateApiTests = false
     configOptions = [
-        outputFileName: "internal-subscription-sync-openapi.json"
+        outputFileName: "internal-subscription-sync-openapi.json",
+        useJakartaEe: "true"
     ]
 }
 
@@ -263,7 +265,8 @@ tasks.register("generateOpenApiJsonBilling", GenerateTask) {
     generateModelTests = false
     generateApiTests = false
     configOptions = [
-            outputFileName: "internal-billing-openapi.json"
+            outputFileName: "internal-billing-openapi.json",
+            useJakartaEe: "true"
     ]
 }
 
@@ -274,7 +277,8 @@ tasks.register("generateOpenApiJsonMetering", GenerateTask) {
     generateModelTests = false
     generateApiTests = false
     configOptions = [
-            outputFileName: "internal-metering-openapi.json"
+            outputFileName: "internal-metering-openapi.json",
+            useJakartaEe: "true"
     ]
 }
 
@@ -316,6 +320,7 @@ project(":api") {
             interfaceOnly: "true",
             generatePom: "false",
             dateLibrary: "java8",
+            useJakartaEe: "true"
         ]
     }
 
@@ -345,10 +350,10 @@ project(":api") {
     }
 
     dependencies {
-        implementation "javax.annotation:javax.annotation-api"
+        implementation "jakarta.annotation:jakarta.annotation-api"
         implementation "com.fasterxml.jackson.core:jackson-annotations"
-        implementation "javax.validation:validation-api"
-        implementation "org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.1_spec"
+        implementation "jakarta.validation:jakarta.validation-api"
+        implementation "jakarta.ws.rs:jakarta.ws.rs-api"
         implementation "io.swagger:swagger-annotations"
         implementation libraries["jsr305"]
         implementation libraries["jackson-databind-nullable"]

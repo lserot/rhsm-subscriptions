@@ -21,7 +21,7 @@
 package org.candlepin.subscriptions.exception;
 
 import java.util.Optional;
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.Response.Status;
 import lombok.Getter;
 import org.candlepin.subscriptions.utilization.api.model.Error;
 

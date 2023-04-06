@@ -25,7 +25,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.HashSet;
-import javax.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import org.candlepin.subscriptions.utilization.api.model.Error;

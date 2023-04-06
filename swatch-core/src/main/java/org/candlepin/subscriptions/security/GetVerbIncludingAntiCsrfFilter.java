@@ -20,7 +20,7 @@
  */
 package org.candlepin.subscriptions.security;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 /**

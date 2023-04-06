@@ -23,7 +23,7 @@ package org.candlepin.subscriptions.task.queue.inmemory;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.PreDestroy;
+import jakarta.annotation.PreDestroy;
 import org.candlepin.subscriptions.task.TaskDescriptor;
 import org.candlepin.subscriptions.task.TaskExecutionException;
 import org.candlepin.subscriptions.task.TaskFactory;

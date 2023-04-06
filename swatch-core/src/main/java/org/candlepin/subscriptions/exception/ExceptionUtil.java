@@ -22,7 +22,7 @@ package org.candlepin.subscriptions.exception;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 import org.candlepin.subscriptions.utilization.api.model.Error;
 import org.candlepin.subscriptions.utilization.api.model.Errors;
 

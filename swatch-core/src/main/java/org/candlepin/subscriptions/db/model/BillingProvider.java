@@ -21,8 +21,8 @@
 package org.candlepin.subscriptions.db.model;
 
 import java.util.Map;
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 import org.candlepin.subscriptions.utilization.api.model.BillingProviderType;
 
 /** Billing provider associated with a host. */

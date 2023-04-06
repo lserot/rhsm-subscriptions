@@ -22,7 +22,7 @@ package org.candlepin.subscriptions.db.model;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import lombok.*;
 
 /** Subscription entities represent data from a Candlepin Pool */

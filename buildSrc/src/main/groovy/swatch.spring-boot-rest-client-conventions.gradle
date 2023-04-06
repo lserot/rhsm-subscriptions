@@ -37,13 +37,14 @@ openApiGenerate {
             generatePom: "false",
             library: "resteasy",
             java8: "true",
-            dateLibrary: "java8"
+            dateLibrary: "java8",
+            useJakartaEe: "true"
     ]
 }
 
 dependencies {
     api project(':clients-core')
-    api "javax.annotation:javax.annotation-api"
+    api "jakarta.annotation:jakarta.annotation-api"
     api "org.jboss.resteasy:resteasy-client"
     api "org.jboss.resteasy:resteasy-multipart-provider"
 
@@ -58,6 +59,7 @@ dependencies {
     api libraries["jackson-databind-nullable"]
 
     compileOnly 'org.springframework.boot:spring-boot'
+    compileOnly libraries["jakarta-ws-rs"]
     testImplementation libraries["wiremock-jre8"]
 }
 

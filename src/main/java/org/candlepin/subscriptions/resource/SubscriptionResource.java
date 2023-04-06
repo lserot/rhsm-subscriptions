@@ -21,7 +21,7 @@
 package org.candlepin.subscriptions.resource;
 
 import java.time.OffsetDateTime;
-import javax.validation.constraints.Min;
+import jakarta.validation.constraints.Min;
 import org.candlepin.subscriptions.security.auth.ReportingAccessRequired;
 import org.candlepin.subscriptions.utilization.api.model.*;
 import org.candlepin.subscriptions.utilization.api.resources.SubscriptionsApi;

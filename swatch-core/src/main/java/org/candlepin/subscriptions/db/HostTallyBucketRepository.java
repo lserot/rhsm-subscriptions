@@ -24,7 +24,7 @@ import static org.hibernate.jpa.QueryHints.HINT_FETCH_SIZE;
 import static org.hibernate.jpa.QueryHints.HINT_READONLY;
 
 import java.util.stream.Stream;
-import javax.persistence.QueryHint;
+import jakarta.persistence.QueryHint;
 import org.candlepin.subscriptions.db.model.AccountBucketTally;
 import org.candlepin.subscriptions.db.model.HostBucketKey;
 import org.candlepin.subscriptions.db.model.HostTallyBucket;

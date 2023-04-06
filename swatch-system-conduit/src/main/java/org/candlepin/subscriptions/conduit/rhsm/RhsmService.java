@@ -26,7 +26,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.constraints.Pattern;
 import javax.ws.rs.core.Response.Status;
 import org.candlepin.subscriptions.conduit.inventory.InventoryServiceProperties;
 import org.candlepin.subscriptions.conduit.rhsm.client.ApiException;

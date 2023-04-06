@@ -22,8 +22,8 @@ package org.candlepin.subscriptions.validator;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 /** A ConstraintValidator that ensures that a MAC address is valid */
 public class MacAddressValidator implements ConstraintValidator<MacAddress, String> {

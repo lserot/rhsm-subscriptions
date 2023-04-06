@@ -21,7 +21,7 @@
 package org.candlepin.subscriptions.jmx;
 
 import java.util.Optional;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import org.candlepin.subscriptions.resource.ResourceUtils;
 import org.candlepin.subscriptions.tally.admin.DataMigrationRunner;
 import org.candlepin.subscriptions.tally.admin.HardwareMeasurementMigration;

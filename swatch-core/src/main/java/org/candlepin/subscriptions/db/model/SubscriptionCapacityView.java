@@ -22,9 +22,9 @@ package org.candlepin.subscriptions.db.model;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
 import lombok.*;
 import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.Subselect;
