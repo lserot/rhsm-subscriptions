@@ -34,10 +34,12 @@ openApiGenerate {
     configOptions = [
             generatePom: "false",
             library: "microprofile",
-            dateLibrary: "java8"
-    ]
+            dateLibrary: "java8",
+     ]
     additionalProperties = [
             disableMultipart: "true", // see https://github.com/OpenAPITools/openapi-generator/pull/4713#issuecomment-633906581
+            // microprofile doesn't support the standard useJakartaEE=true
+            rootJavaEEPackage: "jakarta"
     ]
 }
 

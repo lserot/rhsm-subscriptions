@@ -31,7 +31,7 @@ import com.redhat.swatch.contract.resource.WireMockResource;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import java.time.OffsetDateTime;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.junit.jupiter.api.Test;
 

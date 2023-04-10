@@ -30,11 +30,11 @@ import com.redhat.swatch.contract.service.ContractService;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
-import javax.annotation.security.RolesAllowed;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
-import javax.ws.rs.ProcessingException;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.ProcessingException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

@@ -29,7 +29,7 @@ import java.security.Principal;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
