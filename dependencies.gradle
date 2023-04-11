@@ -37,8 +37,6 @@ libraries["clowder-quarkus-config-source"] = "com.redhat.cloud.common:clowder-qu
 libraries["guava"] = "com.google.guava:guava:31.1-jre"
 libraries["hawtio-springboot"] = "io.hawt:hawtio-springboot:2.17.0"
 libraries["hibernate-jpamodelgen"] = "org.hibernate:hibernate-jpamodelgen:6.1.7.Final"
-// Keep the old jpamodelgen around as it is used for swatch-contracts on quarkus 2
-libraries["hibernate-jpamodelgen-old"] = "org.hibernate:hibernate-jpamodelgen:5.6.15.Final"
 libraries["jackson-databind-nullable"] = "org.openapitools:jackson-databind-nullable:0.2.6"
 libraries["jakarta-ws-rs"] = "jakarta.ws.rs:jakarta.ws.rs-api:3.1.0"
 libraries["janino"] = "org.codehaus.janino:janino:3.1.9"
