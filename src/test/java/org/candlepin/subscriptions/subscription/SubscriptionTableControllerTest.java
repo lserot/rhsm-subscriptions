@@ -34,7 +34,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 import org.candlepin.subscriptions.db.AccountListSource;
 import org.candlepin.subscriptions.db.SubscriptionCapacityRepository;
 import org.candlepin.subscriptions.db.SubscriptionCapacityViewRepository;

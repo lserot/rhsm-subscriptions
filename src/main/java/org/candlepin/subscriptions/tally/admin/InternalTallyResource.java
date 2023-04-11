@@ -21,7 +21,7 @@
 package org.candlepin.subscriptions.tally.admin;
 
 import java.time.OffsetDateTime;
-import javax.ws.rs.BadRequestException;
+import jakarta.ws.rs.BadRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.candlepin.subscriptions.ApplicationProperties;
 import org.candlepin.subscriptions.resource.ResourceUtils;

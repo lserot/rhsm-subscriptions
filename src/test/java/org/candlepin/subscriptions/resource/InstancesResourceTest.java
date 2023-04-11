@@ -32,7 +32,7 @@ import static org.mockito.Mockito.when;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
-import javax.ws.rs.BadRequestException;
+import jakarta.ws.rs.BadRequestException;
 import org.candlepin.subscriptions.db.AccountListSource;
 import org.candlepin.subscriptions.db.TallyInstanceViewRepository;
 import org.candlepin.subscriptions.db.model.BillingProvider;

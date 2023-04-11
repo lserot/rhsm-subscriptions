@@ -26,8 +26,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.HashSet;
 import jakarta.validation.ConstraintViolationException;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 import org.candlepin.subscriptions.utilization.api.model.Error;
 import org.candlepin.subscriptions.utilization.api.model.Errors;
 import org.junit.jupiter.api.Test;

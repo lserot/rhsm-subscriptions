@@ -22,7 +22,7 @@ package org.candlepin.subscriptions.metering.api.admin;
 
 import java.time.OffsetDateTime;
 import java.util.Optional;
-import javax.ws.rs.BadRequestException;
+import jakarta.ws.rs.BadRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.candlepin.subscriptions.ApplicationProperties;
 import org.candlepin.subscriptions.db.AccountConfigRepository;
