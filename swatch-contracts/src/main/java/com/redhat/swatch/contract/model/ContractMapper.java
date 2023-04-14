@@ -33,7 +33,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(
-    componentModel = "cdi",
+    componentModel = "jakarta",
     collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED,
     builder = @Builder(disableBuilder = true))
 public interface ContractMapper {

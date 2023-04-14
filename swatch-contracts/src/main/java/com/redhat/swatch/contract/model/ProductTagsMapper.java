@@ -23,7 +23,7 @@ package com.redhat.swatch.contract.model;
 import com.redhat.swatch.clients.swatch.internal.subscription.api.model.OfferingProductTags;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "cdi")
+@Mapper(componentModel = "jakarta")
 public interface ProductTagsMapper {
 
   com.redhat.swatch.contract.openapi.model.OfferingProductTags clientToApi(
